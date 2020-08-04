@@ -49,6 +49,14 @@ class ProjectParser:
             self.job_data_list.append(processed_job)
 
     def __process_job_item(self, item_path):
+        """Process XML content and return Job objects
+
+        Args:
+            item_path (string): path to the XML file
+
+        Returns:
+            Job: Job object abstraction
+        """
         tree = ET.parse(item_path)
         root = tree.getroot()
         try:
@@ -66,6 +74,15 @@ class ProjectParser:
 
 
     def __get_field_value_from_desc(self, desc, field):
+        """Retrieve a value for a specific field within the MEMO_JAVA value string
+
+        Args:
+            desc (string): full MEMO_JAVA value string
+            field (string): field to retrieve value for
+
+        Returns:
+            string: data value matching the field
+        """
         data_list = desc.split("\n")
         for line in data_list:
             line_data = line.split("=")
