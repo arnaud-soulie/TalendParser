@@ -14,11 +14,10 @@ log.addHandler(ch)
 
 parser = ProjectParser("D:\\Programmation\\Preci\\sari_lot1-v2.0")
 parser.parse_jobs()
-# for j in parser.job_data_list:
-#     print(j)
-e=ExcelWriter("D:\\",'results.xlsx')
+
+e = ExcelWriter("D:\\")
 for job in parser.job_data_list:
-    if job != None:
+    if job is not None:
         e.add_job(job)
-        e.row+=1
+        e.row += 1
 e.workbook.close()

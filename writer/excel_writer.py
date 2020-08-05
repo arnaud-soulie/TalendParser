@@ -1,12 +1,26 @@
-import xlsxwriter
-import os
+"""Write job objects inside an excel file
+
+Raises:
+    Exception: destination directory not existing
+"""
+
+
 import logging
+import os
 import time
 
+import xlsxwriter
+
+
 class ExcelWriter:
+    """Creates a new excel file to store jobs information
+
+    Raises:
+        Exception: destination directory not existing
+    """
 
     logger = logging.getLogger("ProjectParser")
-    
+
     def __init__(self, path):
         filename = time.strftime("%Y%m%d-%H%M%S")+"-report.xlsx"
         self.dest = os.path.join(path, filename)
@@ -32,6 +46,11 @@ class ExcelWriter:
         self.worksheet.write('J1', 'Zone', cell_format)
 
     def add_job(self, job):
+        """Add the job fields inside the worksheet
+
+        Args:
+            job (Job): Talend Job object
+        """
         self.worksheet.write(self.row, 1, job.table_cible)
         self.worksheet.write(self.row, 3, job.schema_source)
         self.worksheet.write(self.row, 4, job.table_source)
@@ -40,5 +59,5 @@ class ExcelWriter:
         self.worksheet.write(self.row, 9, job.zone)
 
 if __name__ == '__main__':
-    e=ExcelWriter("D:\\")
+    e = ExcelWriter("D:\\")
     e.workbook.close()

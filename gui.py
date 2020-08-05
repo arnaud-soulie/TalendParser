@@ -1,5 +1,6 @@
 import logging
 import subprocess
+import threading
 from io import StringIO
 
 from kivy.app import App
@@ -22,11 +23,15 @@ class Screen(BoxLayout):
         self.line = log_stream.getvalue()
 
     def _generate(self, *args):
+        self.project_path = args[0]
         self.ids['open_button'].disabled = True
         self.ids['generate_button'].disabled = True
         Clock.schedule_interval(self._update_logs, 0.5)
+        threading.Thread(target=self.__thread).start()
+
+    def __thread(self):
         try:
-            parser = ProjectParser(args[0])
+            parser = ProjectParser(self.project_path)
             parser.parse_jobs()
             e = ExcelWriter(self.ids['report_path'].text)
             for job in parser.job_data_list:
@@ -41,11 +46,16 @@ class Screen(BoxLayout):
         self.ids['generate_button'].disabled = False
 
     def _open_report(self):
+        """Open the excel report
+        """
         print(self.last_report_path)
         subprocess.Popen([self.last_report_path], shell=True)
 
 class MainApp(App):
+    """Kivy app entry point """
+
     def build(self):
+        self.title = "Talend Extract Generator"
         return Screen()
 
 
@@ -57,7 +67,7 @@ def __configure_logs():
     ch = logging.StreamHandler()
     ch.setFormatter(formatter)
     ch.setLevel(logging.INFO)
-    sh=logging.StreamHandler(stream=log_stream)
+    sh = logging.StreamHandler(stream=log_stream)
     sh.setLevel(logging.INFO)
     sh.setFormatter(formatter)
     log.addHandler(fh)
