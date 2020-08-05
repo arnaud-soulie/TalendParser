@@ -1,10 +1,18 @@
 import xlsxwriter
 import os
+import logging
+import time
 
 class ExcelWriter:
+
+    logger = logging.getLogger("ProjectParser")
     
-    def __init__(self, path, filename):
-        self.workbook = xlsxwriter.Workbook(os.path.join(path, filename))
+    def __init__(self, path):
+        filename = time.strftime("%Y%m%d-%H%M%S")+"-report.xlsx"
+        self.dest = os.path.join(path, filename)
+        if not os.path.isdir(os.path.dirname(self.dest)):
+            raise Exception(f"{os.path.dirname(self.dest)} directory does not exist")
+        self.workbook = xlsxwriter.Workbook(self.dest)
         self.worksheet = self.workbook.add_worksheet()
         self.__init_headers()
         self.row = 1
@@ -32,5 +40,5 @@ class ExcelWriter:
         self.worksheet.write(self.row, 9, job.zone)
 
 if __name__ == '__main__':
-    e=ExcelWriter("D:\\",'results.xlsx')
+    e=ExcelWriter("D:\\")
     e.workbook.close()

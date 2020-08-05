@@ -43,6 +43,7 @@ class ProjectParser:
         if os.listdir(self.process_dir) == 0:
             self.logger.error("Directory %s is empty.", self.process_dir)
             raise Exception(f"Directory {self.process_dir} is empty")
+        self.logger.info("Talend project check OK")
 
     def parse_jobs(self):
         """ Creates a list of talend jobs available in the project

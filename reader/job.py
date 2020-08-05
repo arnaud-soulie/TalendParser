@@ -8,7 +8,7 @@ class Job:
     """
 
     def __init__(self, *, item_path, table_cible, table_source, schema_source,
-                 tree="", zone, root_path):
+                 zone, root_path):
         self.item_path = item_path
         self.table_cible = table_cible
         self.table_source = table_source
