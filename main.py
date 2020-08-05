@@ -1,11 +1,22 @@
+import logging
 from reader.project_parser import ProjectParser
 from writer.excel_writer import ExcelWriter
+log = logging.getLogger()
+fh = logging.FileHandler(filename='logs.log', mode='w')
+fh.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(levelname)s : %(asctime)s : %(name)s : %(message)s')
+fh.setFormatter(formatter)
+ch = logging.StreamHandler()
+ch.setFormatter(formatter)
+ch.setLevel(logging.INFO)
+log.addHandler(fh)
+log.addHandler(ch)
 
 parser = ProjectParser("D:\\Programmation\\Preci\\sari_lot1-v2.0")
 parser.parse_jobs()
 # for j in parser.job_data_list:
 #     print(j)
-e=ExcelWriter("D:\\")
+e=ExcelWriter("D:\\",'results.xlsx')
 for job in parser.job_data_list:
     if job != None:
         e.add_job(job)
