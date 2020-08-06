@@ -31,7 +31,7 @@ jobs:
         python -m pyinstaller -y --add-data "main.kv;."  --hiddenimport pkg_resources.py2_warn --hiddenimport win32timezone gui.py
         echo Looking for libpng16-16.dll in current venv
         where python
-        copy %VIRTUAL_ENV%\share\sdl2\bin\libpng16-16.dll .\dist\gui\libpng16-16.dll
+        copy venv\share\sdl2\bin\libpng16-16.dll .\dist\gui\libpng16-16.dll
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
