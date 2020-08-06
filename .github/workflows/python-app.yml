@@ -25,6 +25,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest pyinstaller xlsxwriter
         pip install docutils pygments pypiwin32 kivy_deps.sdl2==0.1.* kivy_deps.glew==0.1.*
+        pip install kivy.deps.angle
         pip install kivy==1.11.1
     - name: Lint with flake8
       run: |
@@ -34,6 +35,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Create exe
       run: |
+        set KIVY_GL_BACKEND=angle_sdl2
         PyInstaller -y --add-data "main.kv;."  --hiddenimport pkg_resources.py2_warn --hiddenimport win32timezone gui.py
         echo Looking for libpng16-16.dll in current venv
         where python
