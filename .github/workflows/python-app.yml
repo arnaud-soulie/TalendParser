@@ -25,13 +25,14 @@ jobs:
         pip install flake8 pytest pyinstaller xlsxwriter
         pip install docutils pygments pypiwin32 kivy_deps.sdl2==0.1.* kivy_deps.glew==0.1.*
         pip install kivy==1.11.1
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Create exe
       run: |
         PyInstaller -y --add-data "main.kv;."  --hiddenimport pkg_resources.py2_warn --hiddenimport win32timezone gui.py
         echo Looking for libpng16-16.dll in current venv
         where python
         copy %VIRTUAL_ENV%\share\sdl2\bin\libpng16-16.dll .\dist\gui\libpng16-16.dll
+    - name: Upload math result for job 2
+      uses: actions/upload-artifact@v2
+      with:
+        name: gui
+        path: dist\gui
