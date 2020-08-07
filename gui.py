@@ -11,6 +11,8 @@ from kivy.uix.boxlayout import BoxLayout
 
 from reader.project_parser import ProjectParser
 from writer.excel_writer import ExcelWriter
+from kivy import Config
+Config.set('graphics', 'multisamples', '0')
 
 log_stream = StringIO()
 log = logging.getLogger('ProjectParser')

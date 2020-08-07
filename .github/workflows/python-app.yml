@@ -1,0 +1,39 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python application
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v2
+ 
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        venv\Scripts\activate
+        python -m pip install --upgrade pip
+        pip install flake8 pytest pyinstaller xlsxwriter
+        pip install docutils pygments pypiwin32 kivy_deps.sdl2==0.1.* kivy_deps.glew==0.1.*
+        pip install kivy==1.11.1
+    - name: Create exe
+      run: |
+        venv\Scripts\activate
+        python -m PyInstaller -y --add-data "main.kv;."  --hiddenimport pkg_resources.py2_warn --hiddenimport win32timezone gui.py
+        echo Looking for libpng16-16.dll in current venv
+        where python
+        copy venv\share\sdl2\bin\libpng16-16.dll .\dist\gui\libpng16-16.dll
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: gui
+        path: dist\gui
