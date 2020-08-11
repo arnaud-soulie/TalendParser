@@ -12,28 +12,26 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
- 
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6 
     - name: Install dependencies
       run: |
         python -m venv venv
         venv\Scripts\activate
         python -m pip install --upgrade pip
-        pip install flake8 pytest pyinstaller xlsxwriter
-        pip install docutils pygments pypiwin32 kivy_deps.sdl2==0.1.* kivy_deps.glew==0.1.*
-        pip install kivy==1.11.1
+        pip install xlsxwriter pyqt5 fbs
     - name: Create exe
       run: |
         venv\Scripts\activate
-        python -m PyInstaller -y --add-data "main.kv;."  --hiddenimport pkg_resources.py2_warn --hiddenimport win32timezone gui.py
-        echo Looking for libpng16-16.dll in current venv
-        where python
-        copy venv\share\sdl2\bin\libpng16-16.dll .\dist\gui\libpng16-16.dll
+        fbs freeze
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: gui
-        path: dist\gui
+        name: TalendDocGen
+        path: target\TalendParser
