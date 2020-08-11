@@ -61,6 +61,7 @@ def __configure_logs(ui):
     log.addHandler(sh)
     ui.logsBrowser.setFormatter(formatter)
     log.addHandler(ui.logsBrowser)
+    
 
 
 #app = QtWidgets.QApplication(sys.argv)
@@ -70,6 +71,8 @@ ui = Ui_TalendDocGenerator()
 ui.setupUi(MainWindow)
 ui.GenerateButton.clicked.connect(_generate)
 ui.ReportButton.clicked.connect(_open_report)
+ui.ReportButton.setEnabled(False)
+
 __configure_logs(ui)
 MainWindow.show()
 sys.exit(appctxt.app.exec_())

@@ -10,15 +10,19 @@
 import logging
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class QTextEditLogger(logging.Handler):
+class QTextEditLogger(logging.Handler, QtCore.QObject):
+    appendPlainText = QtCore.pyqtSignal(str)
+
     def __init__(self, parent):
         super().__init__()
+        QtCore.QObject.__init__(self)
         self.widget = QtWidgets.QPlainTextEdit(parent)
         self.widget.setReadOnly(True)
+        self.appendPlainText.connect(self.widget.appendPlainText)
 
     def emit(self, record):
         msg = self.format(record)
-        self.widget.appendPlainText(msg)
+        self.appendPlainText.emit(msg)
 
 class Ui_TalendDocGenerator(object):
     def setupUi(self, TalendDocGenerator):
