@@ -44,9 +44,8 @@ def __thread():
         except Exception as ex:
             log.error(str(ex))
         ui.GenerateButton.setEnabled(True)
-        print("finish")
 
-def __configure_logs():
+def __configure_logs(ui):
     fh = logging.FileHandler(filename='logs.log', mode='w')
     fh.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(levelname)s : %(asctime)s : %(message)s')
@@ -60,8 +59,10 @@ def __configure_logs():
     log.addHandler(fh)
     log.addHandler(ch)
     log.addHandler(sh)
+    ui.logsBrowser.setFormatter(formatter)
+    log.addHandler(ui.logsBrowser)
 
-__configure_logs()
+
 #app = QtWidgets.QApplication(sys.argv)
 appctxt = ApplicationContext()
 MainWindow = QtWidgets.QMainWindow()
@@ -69,5 +70,6 @@ ui = Ui_TalendDocGenerator()
 ui.setupUi(MainWindow)
 ui.GenerateButton.clicked.connect(_generate)
 ui.ReportButton.clicked.connect(_open_report)
+__configure_logs(ui)
 MainWindow.show()
 sys.exit(appctxt.app.exec_())
